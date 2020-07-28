@@ -12,25 +12,46 @@ static const MenuItem choices[] = {
 	{NULL, 0}
 };
 
-MainMenu::MainMenu() : Menu(4, 4, 9, 32, choices)
+MainMenu::MainMenu(Device &dev) : Menu(4, 4, 9, 72, choices), device(dev)
 {
-	setItemValue(0, "9600");
-	setItemValue(1, "none");
-	setItemValue(2, "2");
-	setItemValue(3, "250");
+	char buffer[7];
+	const char *p = NULL;
+	
+	sprintf(buffer, "%u", dev.getBaudRate());
+	setItemValue(0, buffer);
+	
+	switch (dev.getParity())
+	{
+	case 'N':
+	    p = "none";
+	    break;
+	case 'E':
+	    p = "even";
+		break;
+	case 'O':
+	    p = "odd";
+		break;
+	}
+	setItemValue(1, p);
+	
+	sprintf(buffer, "%u", dev.getStopBits());
+	setItemValue(2, buffer);
+
+	sprintf(buffer, "%u", dev.getAddress());
+	setItemValue(3, buffer);
 }
 
 void MainMenu::drawHeader(WINDOW *win)
 {
-	mvwprintw(win, 1, 2, "Model      : %s", "WB-MRM3");
-	mvwprintw(win, 2, 2, "Serial     : %u", 0);
-	mvwprintw(win, 3, 2, "Extension  : %llu", 0ULL);
-	mvwprintw(win, 4, 2, "Version    : %s", "ver");
-	mvwprintw(win, 5, 2, "Build      : %s", "xxx");
-	mvwprintw(win, 6, 2, "Signature  : %s", "sig");
-	mvwprintw(win, 7, 2, "Bootloader : %s", "BL");
-	mvwprintw(win, 8, 2, "Power      : %f", 5.0);
-	mvwprintw(win, 9, 2, "Uptime     : %u", 10);
+	mvwprintw(win, 1, 2, "Model      : %s", device.getModel());
+	mvwprintw(win, 2, 2, "Serial     : %u", device.getSerial());
+	mvwprintw(win, 3, 2, "Extension  : %llu", device.getExtension());
+	mvwprintw(win, 4, 2, "Version    : %s", device.getVersion());
+	mvwprintw(win, 5, 2, "Build      : %s", device.getBuild());
+	mvwprintw(win, 6, 2, "Signature  : %s", device.getSignature());
+	mvwprintw(win, 7, 2, "Bootloader : %s", device.getBootloader());
+	mvwprintw(win, 8, 2, "Power      : %.1f V", device.getPower() / 1000.0);
+	mvwprintw(win, 9, 2, "Uptime     : %u sec", device.getUptime());
 }
 
 int MainMenu::onItemSelected(unsigned int n)
