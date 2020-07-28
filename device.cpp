@@ -41,13 +41,7 @@ Device::Device(const char *port, int baud, char parity, int stop_bit, int addres
 
 	readString(version, 16, 250);
 	
-	rc = modbus_read_input_registers(conn, 266, 4, (uint16_t *)&extension);
-	if (rc == -1)
-		extension = 0;
-
-/*	rc = modbus_read_input_registers(conn, 270, 2, (uint16_t *)&serial);
-	if (rc == -1)
-		serial = 0;*/
+    extension = readBELong(266);
 	serial = readBEInt(270);
 	
 	readString(signature, 11, 290);
