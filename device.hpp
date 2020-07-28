@@ -24,6 +24,7 @@ private:
     void readString(char *p, int len, int reg) const;
 	uint32_t readBEInt(int reg) const;
 	uint64_t readBELong(int reg) const;
+	int readInputRegs(int addr, int nb, uint16_t *dest) const;
 
     modbus_t *conn;
 	int baud_rate;

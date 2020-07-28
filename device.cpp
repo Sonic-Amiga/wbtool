@@ -26,13 +26,14 @@ Device::Device(const char *port, int baud, char parity, int stop_bit, int addres
 
     uptime = readBEInt(104);
 
-	rc = modbus_read_input_registers(conn, 121, 1, &power);
+	rc = readInputRegs(121, 1, &power);
 	if (rc == -1)
 		power = 0;
 
     readString(model, 6, 200);
 	
-	rc = modbus_read_input_registers(conn, 220, 29, (uint16_t *)build);
+	// First try newstyle build number, 2 characters per register
+	rc = readInputRegs(220, 29, (uint16_t *)build);
 	if (rc == -1) {
 		readString(build, 22, 220);
 	} else {
@@ -40,10 +41,8 @@ Device::Device(const char *port, int baud, char parity, int stop_bit, int addres
 	}
 
 	readString(version, 16, 250);
-	
     extension = readBELong(266);
 	serial = readBEInt(270);
-	
 	readString(signature, 11, 290);
 	readString(bootloader, 8, 330);
 }
@@ -57,7 +56,7 @@ Device::~Device()
 void Device::readString(char *p, int len, int reg) const
 {
 	uint16_t *buf = new uint16_t[len];
-	int rc = modbus_read_input_registers(conn, reg, len, buf);
+	int rc = readInputRegs(reg, len, buf);
 
 	if (rc == -1) {
 		strcpy(p, "<N/A>");
@@ -73,7 +72,7 @@ void Device::readString(char *p, int len, int reg) const
 uint32_t Device::readBEInt(int reg) const
 {
 	uint16_t buf[2];
-    int rc = modbus_read_input_registers(conn, reg, 2, buf);
+    int rc = readInputRegs(reg, 2, buf);
 
 	if (rc == -1) {
 		return 0;
@@ -85,11 +84,21 @@ uint32_t Device::readBEInt(int reg) const
 uint64_t Device::readBELong(int reg) const
 {
 	uint16_t buf[4];
-    int rc = modbus_read_input_registers(conn, reg, 4, buf);
+    int rc = readInputRegs(reg, 4, buf);
 
 	if (rc == -1) {
 		return 0;
 	} else {
 		return ((uint64_t)buf[0] << 48) | ((uint64_t)buf[1] << 32) | (buf[2] << 16) | buf[3];
 	}
+}
+
+int Device::readInputRegs(int reg, int nb, uint16_t *dest) const
+{
+    int rc = modbus_read_input_registers(conn, reg, nb, dest);
+
+	if (rc == -1 && errno != EMBXILVAL)
+		critical("Failed to read %d input registers at %d: %s\n", nb, reg, modbus_strerror(errno));
+
+    return rc;
 }
