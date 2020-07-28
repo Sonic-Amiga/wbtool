@@ -95,10 +95,18 @@ uint64_t Device::readBELong(int reg) const
 
 int Device::readInputRegs(int reg, int nb, uint16_t *dest) const
 {
-    int rc = modbus_read_input_registers(conn, reg, nb, dest);
+	int retries = 3;
 
-	if (rc == -1 && errno != EMBXILVAL)
+	do {
+        int rc = modbus_read_input_registers(conn, reg, nb, dest);
+	
+	    if (rc != -1)
+			return rc;
+
+	} while (errno == ETIMEDOUT && --retries);
+
+    if (errno != EMBXILVAL)
 		critical("Failed to read %d input registers at %d: %s\n", nb, reg, modbus_strerror(errno));
 
-    return rc;
+    return -1;    
 }
