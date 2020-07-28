@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.0.2)
 
 project(WBTool)
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 FIND_PACKAGE(PkgConfig REQUIRED)
 pkg_check_modules(MODBUS REQUIRED libmodbus)
 
