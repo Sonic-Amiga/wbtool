@@ -22,7 +22,7 @@ static const int rates[] = {
     115200
 };
 
-BaudMenu::BaudMenu(Device &dev) : Menu(6, 6, 1, 16, choices), device(dev)
+BaudMenu::BaudMenu(Device &dev) : Menu(15, 19, 1, 16, choices), device(dev)
 {
 }
 
