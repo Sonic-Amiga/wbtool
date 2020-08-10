@@ -1,7 +1,10 @@
 #ifndef MENU_HPP
 #define MENU_HPP
 
-#include <menu.h>
+#include <newt.h>
+
+#include <string>
+#include <vector>
 
 // Common exit codes
 #define MENU_EXIT -1
@@ -16,12 +19,15 @@ class Menu
 {
 public:
     Menu(int y, int x, int header, int w, const MenuItem *choices);
-    virtual ~Menu();
+    virtual ~Menu()
+    {
+    }
+
     void setItemValue(unsigned int i, const char *val);
     int Execute();
 
 protected:
-    virtual void drawHeader(WINDOW *win)
+    virtual void drawHeader(newtComponent textbox)
     {
     }
 
@@ -30,18 +36,23 @@ protected:
 	return 0;
     }
 
-    WINDOW *getWindow() const {return my_menu_win;}
+    newtComponent getHeaderBox() const {return header_textbox;}
 
 private:
-    ITEM **my_items;
-    char **my_values;
-    MENU *my_menu;
+    std::string formatItem(unsigned int i) const;
+
+    const struct MenuItem *my_items;
+    std::vector<std::string> my_values;
+    newtComponent form;
+    newtComponent header_textbox;
+    newtComponent listbox;
     int begin_y;
     int begin_x;
     int width;
     int header_height;
     int n_choices;
-    WINDOW *my_menu_win;
+    size_t item_width;
+    size_t value_width;
 };
 
 #endif

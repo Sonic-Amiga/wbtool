@@ -26,9 +26,9 @@ BaudMenu::BaudMenu(Device &dev) : Menu(6, 6, 1, 16, choices), device(dev)
 {
 }
 
-void BaudMenu::drawHeader(WINDOW *win)
+void BaudMenu::drawHeader(newtComponent textbox)
 {
-    mvwprintw(win, 1, 1, "Select baud rate");
+    newtTextboxSetText(textbox, "Select baud rate");
 }
 
 int BaudMenu::onItemSelected(unsigned int n)

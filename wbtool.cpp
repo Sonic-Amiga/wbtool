@@ -58,18 +58,13 @@ int main(int argc, char **argv)
 
     Device dev(argv[optind], baud, parity, stop, address);
 
-    /* Initialize curses */
     isWindowMode = true;
-    initscr();
-    start_color();
-    cbreak();
-    noecho();
-    keypad(stdscr, TRUE);
-    init_pair(1, COLOR_RED, COLOR_BLACK);
+    newtInit();
+    newtCls();
 
     MainMenu (dev).Execute();
 
-    endwin();
+     newtFinished();
 }
 
 void critical(const char *fmt, ...)
@@ -77,7 +72,7 @@ void critical(const char *fmt, ...)
     va_list ap;
 
     if (isWindowMode)
-	endwin();
+	newtFinished();
 
     va_start(ap, fmt);
     vfprintf(stderr, fmt, ap);

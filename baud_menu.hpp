@@ -7,7 +7,7 @@ public:
     BaudMenu(Device &dev);
 
 protected:
-	void drawHeader(WINDOW *win) override;
+	void drawHeader(newtComponent textbox) override;
 	int onItemSelected(unsigned int n) override;
 	
 private:

@@ -1,4 +1,4 @@
-#include <string.h>
+#include <sstream>
 
 #include "main_menu.hpp"
 #include "baud_menu.hpp"
@@ -47,28 +47,30 @@ void MainMenu::setItemValues()
     setItemValue(3, buffer);
 }
 
-void MainMenu::drawHeader(WINDOW *win)
+void MainMenu::drawHeader(newtComponent textbox)
 {
-    int l = 1;
+    std::stringstream buf;
 
     if (device.getModel())
-	mvwprintw(win, l++, 2, "Model      : %s", device.getModel());
+	buf << "Model      : " << device.getModel() << '\n';
     if (device.getVersion())
-	mvwprintw(win, l++, 2, "Version    : %s", device.getVersion());
+	buf << "Version    : " << device.getVersion() << '\n';
     if (device.getBuild())
-	mvwprintw(win, l++, 2, "Build      : %s", device.getBuild());
+	buf << "Build      : " << device.getBuild() << '\n';
     if (device.hasSerial())
-	mvwprintw(win, l++, 2, "Serial     : %u", device.getSerial());
+	buf << "Serial     : " << device.getSerial() << '\n';
     if (device.hasExtension())
-	mvwprintw(win, l++, 2, "Extension  : %llu", device.getExtension());
+	buf << "Extension  : " << device.getExtension() << '\n';
     if (device.getSignature())
-	mvwprintw(win, l++, 2, "Signature  : %s", device.getSignature());
+	buf << "Signature  : " << device.getSignature() << '\n';
     if (device.getBootloader())
-	mvwprintw(win, l++, 2, "Bootloader : %s", device.getBootloader());
+	buf << "Bootloader : " << device.getBootloader() << '\n';
     if (device.hasPower())
-	mvwprintw(win, l++, 2, "Power      : %.1f V", device.getPower() / 1000.0);
+	buf << "Power      : " << device.getPower() / 1000.0 << "V\n";
     if (device.hasUptime())
-	mvwprintw(win, l++, 2, "Uptime     : %u sec", device.getUptime());
+	buf << "Uptime     : " << device.getUptime() << " sec\n";
+
+    newtTextboxSetText(textbox, buf.str().c_str());
 }
 
 int MainMenu::onItemSelected(unsigned int n)
@@ -82,7 +84,7 @@ int MainMenu::onItemSelected(unsigned int n)
     }
 
     if (rc != MENU_EXIT) {
-	drawHeader(getWindow());
+	drawHeader(getHeaderBox());
         setItemValues();
     }
 
