@@ -9,9 +9,11 @@ public:
     MainMenu(Device &dev);
 
 protected:
-	void drawHeader(WINDOW *win) override;
-	int onItemSelected(unsigned int n) override;
+    void drawHeader(WINDOW *win) override;
+    int onItemSelected(unsigned int n) override;
 	
 private:
+    void setItemValues();
+
     Device &device;
 };
