@@ -66,7 +66,7 @@ void MainMenu::drawHeader(newtComponent textbox)
     if (device.getBootloader())
 	buf << "Bootloader : " << device.getBootloader() << '\n';
     if (device.hasPower())
-	buf << "Power      : " << device.getPower() / 1000.0 << "V\n";
+	buf << "Power      : " << device.getPower() / 1000.0 << " V\n";
     if (device.hasUptime())
 	buf << "Uptime     : " << device.getUptime() << " sec\n";
 
