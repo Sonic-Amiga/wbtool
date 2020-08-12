@@ -18,7 +18,7 @@ struct MenuItem
 class Menu
 {
 public:
-    Menu(int y, int x, int header, int w, const MenuItem *choices);
+    Menu(int y, int x, int header_height, int width, const MenuItem *choices, std::string title = "");
     virtual ~Menu()
     {
     }
@@ -41,6 +41,7 @@ protected:
 private:
     std::string formatItem(unsigned int i) const;
 
+    const std::string window_title;
     const struct MenuItem *my_items;
     std::vector<std::string> my_values;
     newtComponent form;
@@ -52,7 +53,7 @@ private:
     int header_height;
     int n_choices;
     size_t item_width;
-    size_t value_width;
+    size_t menu_width;
 };
 
 #endif

@@ -22,13 +22,8 @@ static const int rates[] = {
     115200
 };
 
-BaudMenu::BaudMenu(Device &dev) : Menu(15, 19, 1, 16, choices), device(dev)
+BaudMenu::BaudMenu(Device &dev) : Menu(15, 19, 0, 0, choices, "Select baud rate"), device(dev)
 {
-}
-
-void BaudMenu::drawHeader(newtComponent textbox)
-{
-    newtTextboxSetText(textbox, "Select baud rate");
 }
 
 int BaudMenu::onItemSelected(unsigned int n)
