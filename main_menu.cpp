@@ -13,7 +13,9 @@ static const MenuItem choices[] = {
     {NULL, 0}
 };
 
-MainMenu::MainMenu(Device &dev) : Menu(4, 4, dev.getMenuHeaderSize(), 72, choices), device(dev)
+static const unsigned int WINDOW_WIDTH = 72;
+
+MainMenu::MainMenu(Device &dev) : Menu(4, 4, dev.getMenuHeaderSize(), WINDOW_WIDTH, choices), device(dev)
 {
     setItemValues();
 }
@@ -47,7 +49,15 @@ void MainMenu::setItemValues()
     setItemValue(3, buffer);
 }
 
-void MainMenu::drawHeader(newtComponent textbox)
+void MainMenu::onCreate(newtComponent form)
+{
+    header_textbox = newtTextbox(0, 0, WINDOW_WIDTH, getHeaderHeight(), NEWT_FLAG_WRAP);
+    drawHeader();
+
+    newtFormAddComponent(form, header_textbox);
+}
+
+void MainMenu::drawHeader()
 {
     std::stringstream buf;
 
@@ -70,7 +80,7 @@ void MainMenu::drawHeader(newtComponent textbox)
     if (device.hasUptime())
 	buf << "Uptime     : " << device.getUptime() << " sec\n";
 
-    newtTextboxSetText(textbox, buf.str().c_str());
+    newtTextboxSetText(header_textbox, buf.str().c_str());
 }
 
 int MainMenu::onItemSelected(unsigned int n)
@@ -84,7 +94,7 @@ int MainMenu::onItemSelected(unsigned int n)
     }
 
     if (rc != MENU_EXIT) {
-	drawHeader(getHeaderBox());
+	drawHeader();
         setItemValues();
     }
 

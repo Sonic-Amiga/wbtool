@@ -9,11 +9,13 @@ public:
     MainMenu(Device &dev);
 
 protected:
-    void drawHeader(newtComponent textbox) override;
+    void onCreate(newtComponent form) override;
     int onItemSelected(unsigned int n) override;
 	
 private:
+    void drawHeader();
     void setItemValues();
 
     Device &device;
+    newtComponent header_textbox;
 };

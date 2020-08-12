@@ -27,7 +27,7 @@ public:
     int Execute();
 
 protected:
-    virtual void drawHeader(newtComponent textbox)
+    virtual void onCreate(newtComponent form)
     {
     }
 
@@ -36,7 +36,7 @@ protected:
 	return 0;
     }
 
-    newtComponent getHeaderBox() const {return header_textbox;}
+    int getHeaderHeight() const { return header_height; }
 
 private:
     std::string formatItem(unsigned int i) const;
@@ -45,7 +45,6 @@ private:
     const struct MenuItem *my_items;
     std::vector<std::string> my_values;
     newtComponent form;
-    newtComponent header_textbox;
     newtComponent listbox;
     int begin_y;
     int begin_x;

@@ -68,18 +68,7 @@ int Menu::Execute()
 
     newtOpenWindow(begin_x, begin_y, width, header_height + n_choices, window_title.empty() ? nullptr : window_title.c_str());
     form = newtForm(NULL, NULL, 0);
-
-    if (header_height)
-    {
-        header_textbox = newtTextbox(0, 0, width, header_height, NEWT_FLAG_WRAP);
-	drawHeader(header_textbox);
-
-/*	mvwaddch(my_menu_win, header_height, 0, ACS_LTEE);
-	mvwhline(my_menu_win, header_height, 1, ACS_HLINE, width);
-	mvwaddch(my_menu_win, header_height, width + 1, ACS_RTEE);*/
-	newtFormAddComponent(form, header_textbox);
-    }
-
+    onCreate(form);
     listbox = newtListbox(0, header_height, n_choices, NEWT_FLAG_RETURNEXIT);
     
     for (size_t i = 0; i < n_choices; i++) {
