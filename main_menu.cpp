@@ -2,6 +2,8 @@
 
 #include "main_menu.hpp"
 #include "baud_menu.hpp"
+#include "parity_menu.hpp"
+#include "stop_menu.hpp"
 
 static const MenuItem choices[] = {
     {"Baud rate", 6},
@@ -89,6 +91,10 @@ int MainMenu::onItemSelected(unsigned int n)
 
     if (n == 0) {
         rc = BaudMenu(device).Execute();
+    } else if (n == 1) {
+	rc = ParityMenu(device).Execute();
+    } else if (n == 2) {
+	rc = StopMenu(device).Execute();
     } else if (n == 5) {
 	return MENU_EXIT;
     }

@@ -1,10 +1,10 @@
 #include "device.hpp"
 #include "menu.hpp"
 
-class BaudMenu : public Menu
+class ParityMenu : public Menu
 {
 public:
-    BaudMenu(Device &dev);
+    ParityMenu(Device &dev);
 
 protected:
     void onCreate(newtComponent form) override;

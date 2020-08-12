@@ -68,7 +68,6 @@ int Menu::Execute()
 
     newtOpenWindow(begin_x, begin_y, width, header_height + n_choices, window_title.empty() ? nullptr : window_title.c_str());
     form = newtForm(NULL, NULL, 0);
-    onCreate(form);
     listbox = newtListbox(0, header_height, n_choices, NEWT_FLAG_RETURNEXIT);
     
     for (size_t i = 0; i < n_choices; i++) {
@@ -76,6 +75,8 @@ int Menu::Execute()
     }
 
     newtFormAddComponent(form, listbox);
+
+    onCreate(form);
 
     do
     {

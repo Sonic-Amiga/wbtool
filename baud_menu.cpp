@@ -19,11 +19,26 @@ static const int rates[] = {
     19200,
     38400,
     57600,
-    115200
+    115200,
+    0
 };
 
 BaudMenu::BaudMenu(Device &dev) : Menu(15, 19, 0, 0, choices, "Select baud rate"), device(dev)
 {
+}
+
+void BaudMenu::onCreate(newtComponent form)
+{
+    int baud = device.getBaudRate();
+    
+    for (int item = 0; rates[item]; item++)
+    {
+	if (rates[item] == baud)
+	{
+	    setCurrentItem(item);
+	    break;
+	}
+    }
 }
 
 int BaudMenu::onItemSelected(unsigned int n)

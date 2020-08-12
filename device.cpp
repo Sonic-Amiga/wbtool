@@ -7,7 +7,9 @@
 #include "wbtool.hpp"
 
 // All (modern) Wirenboard devices have these registers
-static const int REG_BAUD = 110;
+static const int REG_BAUD     = 110;
+static const int REG_PARITY   = 111;
+static const int REG_STOPBITS = 112;
 
 Device::Device(const char *port, int baud, char parity, int stop_bit, int address)
     : conn(nullptr), is_connected(false),
@@ -48,6 +50,35 @@ int Device::setBaudRate(int baud)
 
     disconnect(true);
     baud_rate = baud;
+    connect();
+    
+    return 0;
+}
+
+int Device::setParity(int parity)
+{
+    static const char parity_chars[] = {'N', 'O', 'E'};
+    int rc = writeHoldingReg(REG_PARITY, parity, true);
+    
+    if (rc == -1)
+	return -1;
+
+    disconnect(true);
+    parity_bit = parity_chars[parity];
+    connect();
+    
+    return 0;
+}
+
+int Device::setStopBits(int stop)
+{
+    int rc = writeHoldingReg(REG_STOPBITS, stop, true);
+    
+    if (rc == -1)
+	return -1;
+
+    disconnect(true);
+    stop_bits = stop;
     connect();
     
     return 0;

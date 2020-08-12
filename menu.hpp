@@ -37,6 +37,11 @@ protected:
     }
 
     int getHeaderHeight() const { return header_height; }
+    
+    void setCurrentItem(int n)
+    {
+        newtListboxSetCurrent(listbox, n);
+    }
 
 private:
     std::string formatItem(unsigned int i) const;

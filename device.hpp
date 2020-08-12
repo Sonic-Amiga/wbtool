@@ -36,6 +36,8 @@ public:
     int getMenuHeaderSize() const;
     
     int setBaudRate(int baud);
+    int setParity(int parity);
+    int setStopBits(int stop);
 
 private:
     void connect();
