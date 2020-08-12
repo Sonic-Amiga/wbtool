@@ -1,4 +1,6 @@
+#include "error_popup.hpp"
 #include "parity_menu.hpp"
+#include "wbtool.hpp"
 
 static const MenuItem choices[] = {
     {"None", 0},
@@ -31,6 +33,8 @@ int ParityMenu::onItemSelected(unsigned int n)
     if (n > 2)
         return MENU_EXIT;
 
-    device.setParity(n);
+    if (device.setParity(n) != 0)
+	ErrorPopup(16, 19, error_or_unsupported()).Display();   
+
     return 1;
 }

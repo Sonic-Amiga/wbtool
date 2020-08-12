@@ -67,6 +67,16 @@ int main(int argc, char **argv)
      newtFinished();
 }
 
+// WB devices return EMBXILVAL for unsupported registers, so we
+// produce more appropriate message
+const char *error_or_unsupported(void)
+{
+    if (errno == EMBXILVAL)
+        return "This function is not supported by this device";
+    else
+	return modbus_strerror(errno);
+}
+
 void critical(const char *fmt, ...)
 {
     va_list ap;

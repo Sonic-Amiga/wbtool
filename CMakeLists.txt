@@ -14,7 +14,8 @@ set (SRCS wbtool.cpp
 	  main_menu.cpp
 	  baud_menu.cpp
 	  parity_menu.cpp
-	  stop_menu.cpp)
+	  stop_menu.cpp
+	  error_popup.cpp)
 
 add_executable(wbtool ${SRCS})
 target_include_directories(wbtool PRIVATE ${MODBUS_INCLUDE_DIRS})

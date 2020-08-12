@@ -1,4 +1,6 @@
+#include "error_popup.hpp"
 #include "stop_menu.hpp"
+#include "wbtool.hpp"
 
 static const MenuItem choices[] = {
     {"1", 0},
@@ -21,6 +23,8 @@ int StopMenu::onItemSelected(unsigned int n)
     if (n > 1)
         return MENU_EXIT;
 
-    device.setStopBits(n + 1);
+    if (device.setStopBits(n + 1))
+	ErrorPopup(17, 19, error_or_unsupported()).Display();
+
     return 1;
 }

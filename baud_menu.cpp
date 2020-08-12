@@ -1,4 +1,6 @@
 #include "baud_menu.hpp"
+#include "error_popup.hpp"
+#include "wbtool.hpp"
 
 static const MenuItem choices[] = {
     {"1200", 0},
@@ -46,6 +48,8 @@ int BaudMenu::onItemSelected(unsigned int n)
     if (n > 6)
         return MENU_EXIT;
 
-    device.setBaudRate(rates[n]);
+    if (device.setBaudRate(rates[n]) != 0)
+	ErrorPopup(15, 19, error_or_unsupported()).Display();
+    
     return 1;
 }
