@@ -13,6 +13,11 @@ struct MenuItem
 {
     const char *title;
     unsigned int value_length;
+    
+    MenuItem(const char *t = nullptr, unsigned int vl = 0)
+        :title(t), value_length(vl)
+    {
+    }
 };
 
 class Menu
