@@ -23,24 +23,6 @@ Device::~Device()
     disconnect(true);
 }
 
-// Small hack: actually belongs to MainMenu, but placed here for convenience
-int Device::getMenuHeaderSize() const
-{
-    int s = 0;
-
-    s += uptime.has_value();
-    s += power.has_value();
-    s += model.has_value();
-    s += build.has_value();
-    s += version.has_value();
-    s += extension.has_value();
-    s += serial.has_value();
-    s += signature.has_value();
-    s += bootloader.has_value();
-
-    return s;
-}
-
 int Device::setBaudRate(int baud)
 {
     int rc = writeHoldingReg(REG_BAUD, baud / 100, true);

@@ -4,17 +4,27 @@
 
 #include "menu.hpp"
 
-Menu::Menu(int y, int x, int header_h, int w, const MenuItem *choices, std::string title)
-    : window_title(title), my_items(choices), listbox(nullptr), begin_y(y), begin_x(x), width(w), header_height(header_h),
-      item_width(0)
+Menu::Menu(int y, int x, int w, std::string title)
+    : window_title(title), listbox(nullptr), begin_y(y), begin_x(x), width(w), item_width(0)
 {
-    size_t value_width = 0;
     // Four characters around title: two spaces and framing
     size_t header_width = title.size() + 4;
     
     if (width < header_width)
-	width = header_width;
-    
+	width = header_width;    
+}
+
+// Some classes may want to fill in "choices" dynamically. It's not convenient
+// to do so in a static method before calling parent constructor, so this
+// "post-constructor" is separated.
+void Menu::init(const MenuItem *choices, int header_h)
+{
+    size_t value_width = 0;
+
+    header_height = header_h;
+    if (header_height)
+	header_height += 1; // Reserve space for separator
+
     for (n_choices = 0; choices[n_choices].title; n_choices++)
     {
 	size_t l = strlen(choices[n_choices].title);
@@ -32,10 +42,8 @@ Menu::Menu(int y, int x, int header_h, int w, const MenuItem *choices, std::stri
     if (width < menu_width)
 	width = menu_width;
 
+    my_items = choices;
     my_values.resize(n_choices);
-
-    if (header_height)
-	header_height += 1; // Reserve space for separator
 }
 
 void Menu::setItemValue(unsigned int i, const char *val)

@@ -17,8 +17,21 @@ static const MenuItem choices[] = {
 
 static const unsigned int WINDOW_WIDTH = 72;
 
-MainMenu::MainMenu(Device &dev) : Menu(4, 4, dev.getMenuHeaderSize(), WINDOW_WIDTH, choices), device(dev)
+MainMenu::MainMenu(Device &dev) : Menu(4, 4, WINDOW_WIDTH), device(dev)
 {
+    int s = 0;
+
+    s += dev.hasUptime();
+    s += dev.hasPower();
+    s += !!dev.getModel();
+    s += !!dev.getBuild();
+    s += !!dev.getVersion();
+    s += dev.hasExtension();
+    s += dev.hasSerial();
+    s += !!dev.getSignature();
+    s += !!dev.getBootloader();
+    
+    init(choices, s);
     setItemValues();
 }
 

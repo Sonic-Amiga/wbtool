@@ -9,8 +9,9 @@ static const MenuItem choices[] = {
     {NULL, 0}
 };
 
-StopMenu::StopMenu(Device &dev) : Menu(17, 19, 0, 0, choices, "Select stop bits"), device(dev)
+StopMenu::StopMenu(Device &dev) : Menu(17, 19, 0, "Select stop bits"), device(dev)
 {
+    init(choices);
 }
 
 void StopMenu::onCreate(newtComponent form)

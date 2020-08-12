@@ -18,7 +18,7 @@ struct MenuItem
 class Menu
 {
 public:
-    Menu(int y, int x, int header_height, int width, const MenuItem *choices, std::string title = "");
+    Menu(int y, int x, int width, std::string title = "");
     virtual ~Menu()
     {
     }
@@ -27,6 +27,8 @@ public:
     int Execute();
 
 protected:
+    void init(const MenuItem *choices, int header_h = 0);
+
     virtual void onCreate(newtComponent form)
     {
     }

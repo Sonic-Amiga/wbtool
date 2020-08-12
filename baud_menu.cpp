@@ -25,8 +25,9 @@ static const int rates[] = {
     0
 };
 
-BaudMenu::BaudMenu(Device &dev) : Menu(15, 19, 0, 0, choices, "Select baud rate"), device(dev)
+BaudMenu::BaudMenu(Device &dev) : Menu(15, 19, 0, "Select baud rate"), device(dev)
 {
+    init(choices);
 }
 
 void BaudMenu::onCreate(newtComponent form)

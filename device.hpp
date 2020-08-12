@@ -33,8 +33,6 @@ public:
     const char *getSignature() const {return c_str(signature); }
     const char *getBootloader() const {return c_str(bootloader); }
 
-    int getMenuHeaderSize() const;
-    
     int setBaudRate(int baud);
     int setParity(int parity);
     int setStopBits(int stop);

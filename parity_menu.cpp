@@ -10,8 +10,9 @@ static const MenuItem choices[] = {
     {NULL, 0}
 };
 
-ParityMenu::ParityMenu(Device &dev) : Menu(16, 19, 0, 0, choices, "Select parity"), device(dev)
+ParityMenu::ParityMenu(Device &dev) : Menu(16, 19, 0, "Select parity"), device(dev)
 {
+    init(choices);
 }
 
 void ParityMenu::onCreate(newtComponent form)
