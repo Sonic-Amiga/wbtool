@@ -46,7 +46,7 @@ void Menu::init(const MenuItem *choices, int header_h)
     my_values.resize(n_choices);
 }
 
-void Menu::setItemValue(unsigned int i, const char *val)
+void Menu::setItemValue(unsigned int i, const std::string &val)
 {
     my_values[i] = val;
     

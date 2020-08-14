@@ -10,11 +10,13 @@ pkg_check_modules(MODBUS REQUIRED libmodbus)
 
 set (SRCS wbtool.cpp
           device.cpp
+	  wbmr_device.cpp
 	  menu.cpp
 	  main_menu.cpp
 	  baud_menu.cpp
 	  parity_menu.cpp
 	  stop_menu.cpp
+ 	  wbmr_menu.cpp
 	  error_popup.cpp)
 
 add_executable(wbtool ${SRCS})

@@ -28,7 +28,7 @@ public:
     {
     }
 
-    void setItemValue(unsigned int i, const char *val);
+    void setItemValue(unsigned int i, const std::string &val);
     int Execute();
 
 protected:
@@ -43,7 +43,10 @@ protected:
 	return 0;
     }
 
+    int getX() const { return begin_x; }
+    int getY() const { return begin_y; }
     int getHeaderHeight() const { return header_height; }
+    int getItemWidth() const { return item_width; }
     
     void setCurrentItem(int n)
     {

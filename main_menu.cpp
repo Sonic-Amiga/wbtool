@@ -38,12 +38,12 @@ void MainMenu::init(const MenuItem *choices)
 
     for (int i = 0; common_choices[i].title; i++)
         items.push_back(common_choices[i]);
+    common_items_count = items.size();
 
     if (choices) {
         for (int i = 0; choices[i].title; i++)
             items.push_back(choices[i]);
     }
-
     cancel_item = items.size();
 
     items.push_back(MenuItem("Exit program"));
@@ -118,7 +118,7 @@ void MainMenu::drawHeader()
 
 int MainMenu::onItemSelected(unsigned int n)
 {
-    int rc;
+    int rc = MENU_EXIT;
 
     if (n == 0) {
         rc = BaudMenu(device).Execute();
@@ -126,10 +126,16 @@ int MainMenu::onItemSelected(unsigned int n)
 	rc = ParityMenu(device).Execute();
     } else if (n == 2) {
 	rc = StopMenu(device).Execute();
+    } else if (n == 3) {
+	// TODO: Set ModBus address
+    } else if (n == 4) {
+	// TODO: Reboot the device
     } else if (n == cancel_item) {
 	return MENU_EXIT;
     }
 
+    // Update item values if the child menu has not been cancelled
+    // (some value has been changed)
     if (rc != MENU_EXIT) {
 	drawHeader();
         setItemValues();

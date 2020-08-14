@@ -90,7 +90,7 @@ void Device::connect()
     model = readString(6, 200);
 	
     // First try newstyle build number, 2 characters per register
-    rc = readInputRegs(220, 29, (uint16_t *)buf);
+    rc = readRegisters(220, 29, (uint16_t *)buf);
     if (rc == -1) {
 	build = readString(22, 220);
     } else {
@@ -124,7 +124,7 @@ void Device::disconnect(bool close_serial)
 std::optional<std::string> Device::readString(int len, int reg) const
 {
     uint16_t *buf = new uint16_t[len];
-    int rc = readInputRegs(reg, len, buf);
+    int rc = readRegisters(reg, len, buf);
     std::optional<std::string> ret;
 
     if (rc != -1) {
@@ -139,10 +139,10 @@ std::optional<std::string> Device::readString(int len, int reg) const
     return ret;
 }
 
-std::optional<uint16_t> Device::readWord(int reg) const
+std::optional<uint16_t> Device::readWord(int reg, bool isInput) const
 {
     uint16_t buf;
-    int rc = readInputRegs(reg, 1, &buf);
+    int rc = readRegisters(reg, 1, &buf, isInput);
 
     if (rc == -1) {
 	return std::nullopt;
@@ -154,7 +154,7 @@ std::optional<uint16_t> Device::readWord(int reg) const
 std::optional<uint32_t> Device::readBEInt(int reg) const
 {
     uint16_t buf[2];
-    int rc = readInputRegs(reg, 2, buf);
+    int rc = readRegisters(reg, 2, buf);
 
     if (rc == -1) {
 	return std::nullopt;
@@ -166,7 +166,7 @@ std::optional<uint32_t> Device::readBEInt(int reg) const
 std::optional<uint64_t> Device::readBELong(int reg) const
 {
     uint16_t buf[4];
-    int rc = readInputRegs(reg, 4, buf);
+    int rc = readRegisters(reg, 4, buf);
 
     if (rc == -1) {
 	return std::nullopt;
@@ -175,12 +175,13 @@ std::optional<uint64_t> Device::readBELong(int reg) const
     }
 }
 
-int Device::readInputRegs(int reg, int nb, uint16_t *dest) const
+int Device::readRegisters(int reg, int nb, uint16_t *dest, bool isInput) const
 {
     int retries = 3;
 
     do {
-        int rc = modbus_read_input_registers(conn, reg, nb, dest);
+        int rc = isInput ? modbus_read_input_registers(conn, reg, nb, dest)
+	                 : modbus_read_registers(conn, reg, nb, dest);
 	
 	if (rc != -1)
 	    return rc;

@@ -37,14 +37,15 @@ public:
     int setParity(int parity);
     int setStopBits(int stop);
 
+    std::optional<std::string> readString(int len, int reg) const;
+    std::optional<uint16_t> readWord(int reg, bool isInput = true) const;
+    std::optional<uint32_t> readBEInt(int reg) const;
+    std::optional<uint64_t> readBELong(int reg) const;
+
 private:
     void connect();
     void disconnect(bool close_serial = false);
-    std::optional<std::string> readString(int len, int reg) const;
-    std::optional<uint16_t> readWord(int reg) const;
-    std::optional<uint32_t> readBEInt(int reg) const;
-    std::optional<uint64_t> readBELong(int reg) const;
-    int readInputRegs(int addr, int nb, uint16_t *dest) const;
+    int readRegisters(int addr, int nb, uint16_t *dest, bool isInput = true) const;
     int writeHoldingReg(int reg, uint16_t data, bool ignore_timeout = false) const;
 
     modbus_t *conn;
@@ -64,5 +65,19 @@ private:
     std::optional<std::string> signature;
     std::optional<std::string> bootloader;
 };
+
+// Since we know type of the Device in question only after reading
+// model ID, device-specific functionality is implemented as wrappers
+// rather than Device subclasses.
+class DeviceWrapper
+{
+public:
+    DeviceWrapper(Device &dev) : device(dev) {}
+    Device &getDevice() const { return device; }
+
+protected:
+    Device &device;
+};
+
 
 #endif

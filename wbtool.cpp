@@ -1,6 +1,7 @@
+#include <string.h>
 #include <unistd.h>
 
-#include "main_menu.hpp"
+#include "wbmr_menu.hpp"
 #include "wbtool.hpp"
 
 static bool isWindowMode = false;
@@ -62,9 +63,19 @@ int main(int argc, char **argv)
     newtInit();
     newtCls();
 
-    MainMenu (dev).Execute();
+    const char *model = dev.getModel();
 
-     newtFinished();
+    if (!model)
+	model = "";
+
+    if (!strncmp(model, "WBMR", 4)) {
+	WBMR_Device wbmr(dev);
+	WBMR_MainMenu(wbmr).Execute();
+    } else {
+        MainMenu(dev).Execute();
+    }
+
+    newtFinished();
 }
 
 // WB devices return EMBXILVAL for unsupported registers, so we
