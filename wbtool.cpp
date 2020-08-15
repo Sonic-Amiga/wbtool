@@ -12,7 +12,7 @@ int main(int argc, char **argv)
     char parity = 'N';
     int stop = 2;
     unsigned int address;
-    char opt;
+    int opt;
 
     while ((opt = getopt(argc, argv, "b:p:s:")) != -1) {
         switch (opt) {
