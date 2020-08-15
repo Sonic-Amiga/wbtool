@@ -9,7 +9,7 @@ static const MenuItem choices[] = {
     {NULL, 0}
 };
 
-StopMenu::StopMenu(Device &dev) : Menu(17, 19, 0, "Select stop bits"), device(dev)
+StopMenu::StopMenu(Position pos, Device &dev) : Menu(pos, 0, "Select stop bits"), device(dev)
 {
     init(choices);
 }

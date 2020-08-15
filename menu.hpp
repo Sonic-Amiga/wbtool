@@ -20,16 +20,31 @@ struct MenuItem
     }
 };
 
+struct Position
+{
+    unsigned int x;
+    unsigned int y;
+};
+
 class Menu
 {
 public:
-    Menu(int y, int x, int width, std::string title = "");
+    Menu(Position pos, int width, std::string title = "");
     virtual ~Menu()
     {
     }
 
     void setItemValue(unsigned int i, const std::string &val);
     int Execute();
+
+    Position getSubmenuPosition() const
+    {
+        // +1 because window border also counts here
+        // One more +1 for X coordinate in order to account for space
+        // between item title and value
+        return {position.x + 2 + item_width,
+                position.y + 1 + header_height + getCurrentItem()};
+    }
 
 protected:
     void init(const MenuItem *choices, int header_h = 0);
@@ -40,11 +55,9 @@ protected:
 
     virtual int onItemSelected(unsigned int n)
     {
-	return 0;
+        return 0;
     }
 
-    int getX() const { return begin_x; }
-    int getY() const { return begin_y; }
     int getHeaderHeight() const { return header_height; }
     int getItemWidth() const { return item_width; }
     
@@ -54,6 +67,11 @@ protected:
     }
 
 private:
+    unsigned int getCurrentItem() const
+    {
+        return (unsigned long)newtListboxGetCurrent(listbox);
+    }
+
     std::string formatItem(unsigned int i) const;
 
     const std::string window_title;
@@ -61,13 +79,12 @@ private:
     std::vector<std::string> my_values;
     newtComponent form;
     newtComponent listbox;
-    int begin_y;
-    int begin_x;
+    Position position;
     int width;
     int header_height;
     int n_choices;
-    size_t item_width;
-    size_t menu_width;
+    unsigned int item_width;
+    unsigned int menu_width;
 };
 
 #endif

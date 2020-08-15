@@ -19,7 +19,7 @@ private:
 class WBMR_InputModeMenu : public Menu
 {
 public:
-    WBMR_InputModeMenu(WBMR_Device &dev, int x, int y);
+    WBMR_InputModeMenu(Position pos, WBMR_Device &dev);
     
 protected:
     int onItemSelected(unsigned int n) override;

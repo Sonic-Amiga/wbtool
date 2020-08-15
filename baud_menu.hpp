@@ -4,7 +4,7 @@
 class BaudMenu : public Menu
 {
 public:
-    BaudMenu(Device &dev);
+    BaudMenu(Position pos, Device &dev);
 
 protected:
     void onCreate(newtComponent form) override;

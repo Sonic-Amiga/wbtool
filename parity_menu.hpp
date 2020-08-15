@@ -4,7 +4,7 @@
 class ParityMenu : public Menu
 {
 public:
-    ParityMenu(Device &dev);
+    ParityMenu(Position pos, Device &dev);
 
 protected:
     void onCreate(newtComponent form) override;

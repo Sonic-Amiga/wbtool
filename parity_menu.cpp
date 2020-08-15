@@ -10,7 +10,7 @@ static const MenuItem choices[] = {
     {NULL, 0}
 };
 
-ParityMenu::ParityMenu(Device &dev) : Menu(16, 19, 0, "Select parity"), device(dev)
+ParityMenu::ParityMenu(Position pos, Device &dev) : Menu(pos, 0, "Select parity"), device(dev)
 {
     init(choices);
 }

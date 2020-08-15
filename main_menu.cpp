@@ -17,7 +17,7 @@ static const MenuItem common_choices[] = {
 static const unsigned int WINDOW_WIDTH = 72;
 
 MainMenu::MainMenu(Device &dev, const MenuItem *choices)
-    : Menu(4, 4, WINDOW_WIDTH), device(dev)
+    : Menu({4, 4}, WINDOW_WIDTH), device(dev)
 {   
     init(choices);
 }
@@ -121,23 +121,23 @@ int MainMenu::onItemSelected(unsigned int n)
     int rc = MENU_EXIT;
 
     if (n == 0) {
-        rc = BaudMenu(device).Execute();
+        rc = BaudMenu(getSubmenuPosition(), device).Execute();
     } else if (n == 1) {
-	rc = ParityMenu(device).Execute();
+        rc = ParityMenu(getSubmenuPosition(), device).Execute();
     } else if (n == 2) {
-	rc = StopMenu(device).Execute();
+        rc = StopMenu(getSubmenuPosition(), device).Execute();
     } else if (n == 3) {
-	// TODO: Set ModBus address
+        // TODO: Set ModBus address
     } else if (n == 4) {
-	// TODO: Reboot the device
+        // TODO: Reboot the device
     } else if (n == cancel_item) {
-	return MENU_EXIT;
+        return MENU_EXIT;
     }
 
     // Update item values if the child menu has not been cancelled
     // (some value has been changed)
     if (rc != MENU_EXIT) {
-	drawHeader();
+        drawHeader();
         setItemValues();
     }
 

@@ -21,12 +21,12 @@ static const char *InputModes[] =
 static std::string _stringForNumber(uint16_t n, const char **table, size_t table_size)
 {
     if (n >= table_size / sizeof(const char *)) {
-	std::stringstream s;
+        std::stringstream s;
 
-	s << "Unknown (" << n << ')';
-	return s.str();
+        s << "Unknown (" << n << ')';
+        return s.str();
     } else {
-	return table[n];
+        return table[n];
     }
 }
 
@@ -61,10 +61,10 @@ int WBMR_MainMenu::onItemSelected(unsigned int n)
     if (n == base) {
         // TODO: Power off handling
     } else if (n == base + 1) {
-	device.readInputModes();
-	WBMR_InputModeMenu(device, getX() + getItemWidth(), getY() + getHeaderHeight() + 7).Execute();
+        device.readInputModes();
+        WBMR_InputModeMenu(getSubmenuPosition(), device).Execute();
     } else {
-	return MainMenu::onItemSelected(n);
+        return MainMenu::onItemSelected(n);
     }
 
     return 0;
@@ -82,14 +82,14 @@ const MenuItem WBMR_InputModeMenu::choices[] =
     {"Input #0", 26},
 };
 
-WBMR_InputModeMenu::WBMR_InputModeMenu(WBMR_Device &dev, int x, int y)
-    : Menu(y, x, 0, "WB-MR input modes"), device(dev), input_count(0)
+WBMR_InputModeMenu::WBMR_InputModeMenu(Position pos, WBMR_Device &dev)
+    : Menu(pos, 0, "WB-MR input modes"), device(dev), input_count(0)
 {
     for (int i = 0; i < WBMR_MAX_INPUTS; i++) {
-	if (dev.hasInputState(i)) {	
-	    input_map[input_count++] = i;
-	    items.push_back(choices[i]);
-	}
+        if (dev.hasInputState(i)) {	
+            input_map[input_count++] = i;
+            items.push_back(choices[i]);
+        }
     }
 
     items.push_back(MenuItem("Return"));
@@ -102,7 +102,7 @@ WBMR_InputModeMenu::WBMR_InputModeMenu(WBMR_Device &dev, int x, int y)
 void WBMR_InputModeMenu::setItemValues()
 {
     for (unsigned int i = 0; i < input_count; i++) {
-	uint16_t mode = device.getInputState(input_map[i]);
+        uint16_t mode = device.getInputState(input_map[i]);
 
         setItemValue(i, stringForIdx(mode, InputModes));
     }
@@ -113,6 +113,6 @@ int WBMR_InputModeMenu::onItemSelected(unsigned int n)
     if (n >= input_count) {
         return MENU_EXIT;
     } else {
-	return 0;
+        return 0;
     }
 }

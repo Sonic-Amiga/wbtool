@@ -25,7 +25,7 @@ static const int rates[] = {
     0
 };
 
-BaudMenu::BaudMenu(Device &dev) : Menu(15, 19, 0, "Select baud rate"), device(dev)
+BaudMenu::BaudMenu(Position pos, Device &dev) : Menu(pos, 0, "Select baud rate"), device(dev)
 {
     init(choices);
 }

@@ -4,7 +4,7 @@
 class StopMenu : public Menu
 {
 public:
-    StopMenu(Device &dev);
+    StopMenu(Position pos, Device &dev);
 
 protected:
     void onCreate(newtComponent form) override;
