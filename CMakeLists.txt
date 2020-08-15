@@ -22,4 +22,4 @@ set (SRCS wbtool.cpp
 add_executable(wbtool ${SRCS})
 target_include_directories(wbtool PRIVATE ${MODBUS_INCLUDE_DIRS})
 target_link_directories(wbtool PRIVATE ${MODBUS_LIBRARY_DIRS})
-target_link_libraries(wbtool menu newt slang modbus)
+target_link_libraries(wbtool newt slang modbus)
