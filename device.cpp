@@ -57,7 +57,7 @@ int Device::setStopBits(int stop)
     int rc = writeHoldingReg(REG_STOPBITS, stop, true);
     
     if (rc == -1)
-	return -1;
+        return -1;
 
     disconnect(true);
     stop_bits = stop;
@@ -201,9 +201,8 @@ int Device::writeHoldingReg(int reg, uint16_t data, bool ignore_timeout) const
     do {
         int rc = modbus_write_register(conn, reg, data);
 	
-	if (rc != -1)
-	    return rc;
-
+        if (rc != -1)
+            return rc;
     } while (errno == ETIMEDOUT && --retries);
 
     // This in fact is a kludge in order to attempt to recover from a sutiation
@@ -213,10 +212,10 @@ int Device::writeHoldingReg(int reg, uint16_t data, bool ignore_timeout) const
     // changed, but we'll ignore this and just try to re-establish the communication
     // using new parameters.
     if (errno == ETIMEDOUT && ignore_timeout)
-	return 0;
+        return 0;
 
     if (errno != EMBXILVAL)
-	critical("Failed to write holding register at %d: %s\n", reg, modbus_strerror(errno));
+        critical("Failed to write holding register at %d: %s\n", reg, modbus_strerror(errno));
 
     return -1;    
 }

@@ -10,9 +10,12 @@ public:
     int readInputModes();
 
     bool hasPowerOffMode() const { return poweroff_mode.has_value(); }
-    uint16_t getPowerOffMode() const { return poweroff_mode.has_value(); }
-    bool hasInputState(int n) const { return input_modes[n].has_value(); }
-    uint16_t getInputState(int n) const { return input_modes[n].value(); }
+    uint16_t getPowerOffMode() const { return poweroff_mode.value(); }
+    bool hasInputMode(int n) const { return input_modes[n].has_value(); }
+    uint16_t getInputMode(int n) const { return input_modes[n].value(); }
+
+    int setPowerOffMode(uint16_t mode);
+    int setInputMode(int n, uint16_t mode);
 
 private:
     std::optional<uint16_t> poweroff_mode;

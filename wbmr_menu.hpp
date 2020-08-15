@@ -16,6 +16,19 @@ private:
     WBMR_Device &device;
 };
 
+class WBMR_PowerOffModeMenu : public Menu
+{
+public:
+    WBMR_PowerOffModeMenu(Position pos, WBMR_Device &dev);
+
+protected:
+    void onCreate(newtComponent form) override;
+    int onItemSelected(unsigned int n) override;
+
+private:
+    WBMR_Device &device;
+};
+
 class WBMR_InputModeMenu : public Menu
 {
 public:
@@ -32,4 +45,18 @@ private:
     std::vector<MenuItem> items;
     unsigned int input_map[7];
     unsigned int input_count;
+};
+
+class InputModeChangeMenu : public Menu
+{
+public:
+    InputModeChangeMenu(Position pos, unsigned int idx, WBMR_Device &dev);
+
+protected:
+    void onCreate(newtComponent form) override;
+    int onItemSelected(unsigned int n) override;
+
+private:
+    WBMR_Device &device;
+    unsigned int input_index;
 };

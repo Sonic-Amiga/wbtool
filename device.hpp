@@ -42,11 +42,12 @@ public:
     std::optional<uint32_t> readBEInt(int reg) const;
     std::optional<uint64_t> readBELong(int reg) const;
 
+    int writeHoldingReg(int reg, uint16_t data, bool ignore_timeout = false) const;
+
 private:
     void connect();
     void disconnect(bool close_serial = false);
     int readRegisters(int addr, int nb, uint16_t *dest, bool isInput = true) const;
-    int writeHoldingReg(int reg, uint16_t data, bool ignore_timeout = false) const;
 
     modbus_t *conn;
     bool is_connected;
