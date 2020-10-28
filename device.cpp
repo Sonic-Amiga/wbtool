@@ -181,15 +181,15 @@ int Device::readRegisters(int reg, int nb, uint16_t *dest, bool isInput) const
 
     do {
         int rc = isInput ? modbus_read_input_registers(conn, reg, nb, dest)
-	                 : modbus_read_registers(conn, reg, nb, dest);
-	
-	if (rc != -1)
-	    return rc;
+                         : modbus_read_registers(conn, reg, nb, dest);
+
+        if (rc != -1)
+            return rc;
 
     } while (errno == ETIMEDOUT && --retries);
 
-    if (errno != EMBXILVAL)
-	critical("Failed to read %d input registers at %d: %s\n", nb, reg, modbus_strerror(errno));
+    if (!is_unsupported())
+        critical("Failed to read %d input registers at %d: %s\n", nb, reg, modbus_strerror(errno));
 
     return -1;    
 }
@@ -200,7 +200,7 @@ int Device::writeHoldingReg(int reg, uint16_t data, bool ignore_timeout) const
 
     do {
         int rc = modbus_write_register(conn, reg, data);
-	
+
         if (rc != -1)
             return rc;
     } while (errno == ETIMEDOUT && --retries);
@@ -214,7 +214,7 @@ int Device::writeHoldingReg(int reg, uint16_t data, bool ignore_timeout) const
     if (errno == ETIMEDOUT && ignore_timeout)
         return 0;
 
-    if (errno != EMBXILVAL)
+    if (!is_unsupported())
         critical("Failed to write holding register at %d: %s\n", reg, modbus_strerror(errno));
 
     return -1;    

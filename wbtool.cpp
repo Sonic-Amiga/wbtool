@@ -82,7 +82,7 @@ int main(int argc, char **argv)
 // produce more appropriate message
 const char *error_or_unsupported(void)
 {
-    if (errno == EMBXILVAL)
+    if (is_unsupported())
         return "This function is not supported by this device";
     else
 	return modbus_strerror(errno);
